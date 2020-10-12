@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://actor/player.gd" type="Script" id=1]
+[ext_resource path="res://assets/sprites/player_banano1.png" type="Texture" id=2]
+[ext_resource path="res://assets/sprites/player_banano2.png" type="Texture" id=3]
+[ext_resource path="res://assets/sprites/player_banano3.png" type="Texture" id=4]
+
+[sub_resource type="SpriteFrames" id=9]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "stairs",
+"speed": 4.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "fall",
+"speed": 2.0
+}, {
+"frames": [ ExtResource( 3 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "walk",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 16, 32 )
+
+[sub_resource type="CircleShape2D" id=11]
+radius = 16.0
+
+[node name="player" type="KinematicBody2D" groups=[
+"player",
+]]
+script = ExtResource( 1 )
+
+[node name="anim" type="AnimatedSprite" parent="."]
+frames = SubResource( 9 )
+animation = "walk"
+
+[node name="shape" type="CollisionShape2D" parent="."]
+shape = SubResource( 10 )
+
+[node name="visibility" type="VisibilityNotifier2D" parent="."]
+
+[node name="detect" type="Area2D" parent="."]
+position = Vector2( 0, 2 )
+
+[node name="shape" type="CollisionShape2D" parent="detect"]
+shape = SubResource( 11 )
+[connection signal="screen_exited" from="visibility" to="." method="_on_visibility_screen_exited"]
+[connection signal="area_entered" from="detect" to="." method="_on_detect_area_entered"]
+[connection signal="area_exited" from="detect" to="." method="_on_detect_area_exited"]
